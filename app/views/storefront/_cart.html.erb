@@ -1,0 +1,47 @@
+<% if @cart.count <= 0 %>
+	<p>Your cart is empty.</p>
+
+<% else %>
+
+	<table class="table-condensed">
+		<thead>
+			<tr>
+				<th>Qty</th>
+				<th>Name</th>
+				<th>Price</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			<% @cart.each do |key, value| %>
+			<tr>
+				<td><%=  value[0] %></td>
+				<td><%=  value[1] %></td>
+				<td><%=  number_to_currency(value[2] * value[0]) %></td>
+				<td>
+					<%= link_to  storefront_remove_cart_item_path(:product_id => key), :method => :delete do %>
+						<button type="button" class="btn btn-default btn-xs">
+  							<span class="glyphicon glyphicon-remove-sign"></span>
+						</button>
+					<% end %>
+				</td>
+			</tr>
+			<% end %>
+		</tbody>
+	</table>
+
+	<div class="order_total">
+		<p><strong>Order Total:</strong> <%= number_to_currency(@sum) %> 
+			<% if user_signed_in? %>
+
+			<%= link_to "Place Order", choose_address_path(:user_id => current_user.id), :class => "label label-danger", :id => "color_white"  %>
+
+			<% else %>
+
+			<%= link_to "Place Order", new_user_session_path, :class => "label label-danger", :id => "color_white"  %>
+			
+			<% end %>
+		</p>
+	</div>
+
+<% end %>

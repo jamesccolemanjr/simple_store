@@ -1,0 +1,3 @@
+== A Simple Store
+
+This simple e commerce store was designed to get me acquanted with basic ecommerce principles.  It is based on a similar store by Yosep Kim.

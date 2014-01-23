@@ -1,0 +1,96 @@
+
+<div class="row">
+	<div class ="col-md-12">
+	<ul class="nav nav-pills">
+		<li class="active"><%= link_to "All", root_path %></li>
+		<% @categories.each do |category| %>
+  			<li><%= link_to category.name, products_by_category_path(:category_id => category.id) %></li>
+  		<% end %>
+	</ul>
+	</div>
+</div>
+
+<div class="row">
+<% if @description.blank? %>
+<% else %>	
+	<div class ="col-md-12">
+		<p class ="alert alert-info description"><%= @description %></p>
+	</div>
+<% end %>
+</div>
+
+<div class="row">
+	<div class="col-md-9">
+		<h3>Our Products</h3>
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th>Quantity</th>
+					<th>Unit</th>
+					<th>Product Name</th>
+					<th>SKU</th>
+					<th>Description</th>
+					<th>Price</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<% @products.each do |product| %>
+				<tr>
+					<td>
+						<input type="text" value="1" class="quantity form-control" />
+						<span class="label label-primary add-to-cart-button" id="addtocart_button"
+						data-product-id="<%= product.id %>"
+						data-product-name="<%= product.name %>"
+						data-product-price="<%= product.price %>">
+						Add to Cart
+						</span>
+					</td>
+					<td><%= product.um %></td>
+					<td><%= product.name %></td>
+					<td><%= product.sku %></td>
+					<td id="description"><%= product.description %></td>
+					<td><%= number_to_currency(product.price) %></td>
+				</tr>
+				<% end %>
+			</tbody>
+		</table>
+
+	</div>
+	<div class="col-md-3">
+			<h3>Cart</h3>
+			<div id="cart_msg">
+				<%= render "cart" %>
+			</div>
+	</div>
+</div>
+
+<script>
+$(document).ready(function () {	
+	$('.add-to-cart-button').click(function () {
+		var quantity_text_box = $(this).siblings('.quantity');
+		var value = quantity_text_box.val();
+
+		var value_int = parseInt(value);
+
+		//var product_id = $(this).siblings('.product-id').val();
+		var product_id = $(this).data('product-id');
+		var product_name = $(this).data('product-name');
+		var product_price = $(this).data('product-price');
+
+		if (value_int > 0) {
+			
+			// Make an AJAX call
+			$.post('/storefront/add_cart', {
+				quantity : value_int,
+				product_id : product_id,
+				product_name : product_name,
+				product_price : product_price
+			});
+
+		} else {
+			alert(value + ' is not a number. Please type in a number');
+		}
+	});
+});
+</script>

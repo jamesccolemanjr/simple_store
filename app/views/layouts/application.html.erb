@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>The Nuts and Bolts Store</title>
+  <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="page-header">
+				<%= link_to root_path, :class => "store_title" do %>
+				<h1>The Nuts and Bolts Store</h1>
+				<% end %>
+				<% if user_signed_in? %>
+					Signed in as <%= current_user.email %> <strong>Not you?</strong>
+					<%= link_to "Sign out", destroy_user_session_path, method: :delete, :class => "label label-danger", :id => "color_white" %>
+				<% else %>
+					<%= link_to "Sign up", new_user_registration_path, :class => "label label-primary", :id => "color_white" %> or <%= link_to "Sign in", new_user_session_path, :class => "label label-primary", :id => "color_white" %>
+				<% end %>
+			</div>
+			</div>
+		</div>
+		<div>
+			<% if notice.blank? %>
+			<% else %>
+			<p class="alert alert-success description"><%= notice %></p>
+			<% end %>
+
+			<% if alert.blank? %>
+			<% else %>
+			<p class="alert alert-danger description"><%= alert %></p>
+			<% end %>
+
+			<%= yield %>
+		</div>
+	</div>
+
+</body>
+</html>

@@ -1,0 +1,33 @@
+<h1>Thanks for your order.</h1>
+<h3>The following items will be shipped soon.</h3>
+
+<% order = @order %>
+
+<table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Quantity</th>
+          <th>Product Name</th>
+          <th>Unit Price</th>
+          <th>Extended Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% order.line_items.each do |line_item| %>
+        <tr>
+          <td><%= line_item.quantity %></td>
+          <td><%= line_item.product.name %></td>
+          <td><%= number_to_currency(line_item.unit_price) %></td>
+          <td><%= number_to_currency(line_item.unit_price * line_item.quantity) %></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+
+
+  Sub Total: <%= number_to_currency(order.sub_total) %><br/>
+  Sales Tax(<%= Order.sales_tax_in_percent %>%): <%= number_to_currency(order.sales_tax) %><br/>
+  Grand Total: <%= number_to_currency(order.grand_total) %><br/>
+
+  <%= link_to 'Continue Shopping', root_path, :class =>"label label-default", :id =>"color_white" %>
